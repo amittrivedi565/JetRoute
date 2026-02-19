@@ -4,7 +4,7 @@ To ensure that request redirect to the correct service, validation of the reques
 
 ### Features
 
-- Reverse Proxy
+- Reverse proxy
 - Service Registry
 - Request Validation
 - Rate Limiting

@@ -2,6 +2,11 @@
   "service": "order-service",
   "host": "localhost",
   "port": 8090,
+  "auth": {
+    "host": "localhost",
+    "port": 8090,
+    "path": "/api/validate-token"
+  },
   "private-routes": [
     {
       "path": "/api/orders/*"

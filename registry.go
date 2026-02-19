@@ -10,12 +10,20 @@ type ServiceConfig struct {
 	Service       string          `json:"service"`
 	Host          string          `json:"host"`
 	Port          int             `json:"port"`
+	Auth          AuthConfig     `json:"auth"`
 	PrivateRoutes []PrivateRoutes `json:"private-routes"`
+}
+
+type AuthConfig struct {
+	Host string `json:"host"`
+	Port int    `json:"port"`
+	Path string `json:"path"`
 }
 
 type PrivateRoutes struct {
 	Path string `json:"path"`
 }
+
 
 var Config = make(map[string]*ServiceConfig)
 

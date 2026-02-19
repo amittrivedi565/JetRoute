@@ -28,7 +28,7 @@ func router(w http.ResponseWriter, r *http.Request) {
 		}
 
 		if private {
-			if !authorize(r) {
+			if !authorize(r, cfg) {
 				http.Error(w, "Unauthorized", http.StatusUnauthorized)
 				return
 			}
@@ -58,9 +58,19 @@ func extractService(path string) (string, string) {
 	return service, endpoint
 }
 
-func authorize(r *http.Request) bool {
+func authorize(r *http.Request, cfg *ServiceConfig) bool {
 
-	req, _ := http.NewRequest("GET", "http://localhost:9000/validate", nil)
+	authURL := fmt.Sprintf(
+		"http://%s:%d%s",
+		cfg.Auth.Host,
+		cfg.Auth.Port,
+		cfg.Auth.Path,
+	)
+
+	req, err := http.NewRequest("GET", authURL, nil)
+	if err != nil {
+		return false
+	}
 
 	req.Header = r.Header.Clone()
 

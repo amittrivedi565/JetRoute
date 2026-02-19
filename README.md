@@ -7,15 +7,11 @@ To ensure that request redirect to the correct service, validation of the reques
 - Reverse proxy -> Done
 - Service Registry -> Done
 - Authentication -> Done
+- Request Logging -> Done
 - Rate Limiting
-- Request Logging
-- Circuit Breaker
 
 ### Workflow
 
 ```workflow
 HTTP Request -> Gateway -> Middlewares -> Destination Service
 ```
-
-- Register the service with gateway
-- Integrate authentication service

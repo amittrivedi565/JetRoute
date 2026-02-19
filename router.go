@@ -17,20 +17,31 @@ func router(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	for _, route := range cfg.PrivateRoutes {
+
+		private := false
+
 		if strings.HasSuffix(route.Path, "/*") {
-			prefix := strings.TrimPrefix(route.Path, "/*")
-			if strings.HasSuffix(endpoint, prefix) {
-				// call the auth service
-			}
+			prefix := strings.TrimSuffix(route.Path, "/*")
+			private = strings.HasPrefix(endpoint, prefix)
 		} else {
-			target, _ := url.Parse(fmt.Sprintf("http://%s:%d", cfg.Host, cfg.Port))
+			private = endpoint == route.Path
+		}
 
-			r.URL.Path = endpoint
-			r.Host = target.Host
-
-			httputil.NewSingleHostReverseProxy(target).ServeHTTP(w, r)
+		if private {
+			if !authorize(r) {
+				http.Error(w, "Unauthorized", http.StatusUnauthorized)
+				return
+			}
+			break
 		}
 	}
+
+	target, _ := url.Parse(fmt.Sprintf("http://%s:%d", cfg.Host, cfg.Port))
+
+	r.URL.Path = endpoint
+	r.Host = target.Host
+
+	httputil.NewSingleHostReverseProxy(target).ServeHTTP(w, r)
 }
 
 func extractService(path string) (string, string) {
@@ -45,4 +56,19 @@ func extractService(path string) (string, string) {
 	}
 
 	return service, endpoint
+}
+
+func authorize(r *http.Request) bool {
+
+	req, _ := http.NewRequest("GET", "http://localhost:9000/validate", nil)
+
+	req.Header = r.Header.Clone()
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return false
+	}
+	defer resp.Body.Close()
+
+	return resp.StatusCode == http.StatusOK
 }

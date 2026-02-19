@@ -34,6 +34,6 @@ func LoadConfig() error {
 	}
 
 	Config[config.Service] = &config
-	fmt.Println("JetRoute [Configuration Loaded]")
+	fmt.Println("[Configuration Loaded]")
 	return nil
 }

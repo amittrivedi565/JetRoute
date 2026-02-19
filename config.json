@@ -1,7 +1,7 @@
 {
-  "service": "OrderService",
+  "service": "order-service",
   "host": "localhost",
-  "port": 8080,
+  "port": 8090,
   "private-routes": [
     {
       "path": "/api/orders/*"

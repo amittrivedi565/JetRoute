@@ -3,8 +3,8 @@
   "host": "localhost",
   "port": 8080,
   "private-routes": [
-    "/api/orders/*",
-    "/api/users/*",
-    "/api/status/*"
+    {
+      "path": "/api/orders/*"
+    }
   ]
 }

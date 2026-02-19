@@ -1,6 +1,7 @@
 ## JetRoute (Microservice Gateway)
-Purpose of this gateway is to route required request to the correct destination service.
-To ensure that request redirect to the correct service, validation of the request by integrating authentication service, request logging to ensure our system is maintained and many more features.
+It is an API Gateway for microservices with features such as Service Registry with route management control such as Public & Private Routes, Authentication Management, Request Logging, Reverse Proxy and Rate Limiting.
+
+The gateway ensures that your services aren't exposed to the public.
 
 ### Features
 

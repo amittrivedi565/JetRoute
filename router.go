@@ -8,10 +8,7 @@ import (
 	"strings"
 )
 
-// -> http://jetroute/order-service/users/123
-// -> http://localhost:service-port/users/123
 func router(w http.ResponseWriter, r *http.Request) {
-
 	service, endpoint := extractService(r.URL.Path)
 
 	cfg, ok := Config[service]
@@ -19,16 +16,24 @@ func router(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "service not found", http.StatusNotFound)
 		return
 	}
-	target, _ := url.Parse(fmt.Sprintf("http://%s:%d", cfg.Host, cfg.Port))
+	for _, route := range cfg.PrivateRoutes {
+		if strings.HasSuffix(route.Path, "/*") {
+			prefix := strings.TrimPrefix(route.Path, "/*")
+			if strings.HasSuffix(endpoint, prefix) {
+				// call the auth service
+			}
+		} else {
+			target, _ := url.Parse(fmt.Sprintf("http://%s:%d", cfg.Host, cfg.Port))
 
-	r.URL.Path = endpoint
-	r.Host = target.Host
+			r.URL.Path = endpoint
+			r.Host = target.Host
 
-	httputil.NewSingleHostReverseProxy(target).ServeHTTP(w, r)
+			httputil.NewSingleHostReverseProxy(target).ServeHTTP(w, r)
+		}
+	}
 }
 
 func extractService(path string) (string, string) {
-
 	path = strings.Trim(path, "/")
 	parts := strings.SplitN(path, "/", 2)
 

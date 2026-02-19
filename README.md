@@ -4,9 +4,9 @@ To ensure that request redirect to the correct service, validation of the reques
 
 ### Features
 
-- Reverse proxy
-- Service Registry
-- Request Validation
+- Reverse proxy -> Done
+- Service Registry -> Done
+- Authentication -> Done
 - Rate Limiting
 - Request Logging
 - Circuit Breaker
